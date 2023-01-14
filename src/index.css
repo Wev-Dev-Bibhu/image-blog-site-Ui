@@ -32,8 +32,7 @@ code {
   background: #313030;
 }
 
-.css-r05uro-MuiInputBase-root-MuiInput-root:before,
-.css-k21ip2-MuiInputBase-root-MuiInput-root:before {
+form div::before {
   border-bottom: 1.5px solid rgb(243 243 243) !important;
 }
 
