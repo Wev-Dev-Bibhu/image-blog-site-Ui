@@ -16,7 +16,6 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showCPassword, setShowCPassword] = useState(false);
     const [httpRequest, setHttpRequest] = useState(false);
-    const ariaLabel = { 'min': 10, 'max': 10 };
 
     const [formData, setFormData] = useState({
         username: "",
