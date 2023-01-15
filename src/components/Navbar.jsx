@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { useState, useEffect, memo, Fragment } from 'react';
 import { Avatar, Button, Tooltip, MenuItem, Container, Toolbar, Menu, Typography, IconButton, Box, AppBar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import LoadingBar from 'react-top-loading-bar';
+import Cookies from 'universal-cookie';
+import { useSnackbar } from 'notistack';
 
 const pages = [{
     key: "about",
@@ -11,10 +13,8 @@ const pages = [{
 }, {
     key: "contact",
     value: "CONTACT US"
-}, {
-    key: "signin",
-    value: "SIGN IN"
 }];
+
 
 const settings = [{
     key: "favourites",
@@ -22,14 +22,25 @@ const settings = [{
 }, {
     key: "dashboard",
     value: "Dashboard"
-}, {
-    key: "logout",
-    value: "Logout"
 }];
 
 const Navbar = (props) => {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+    const cookie = new Cookies();
+    const location = useLocation()
+    const navigate = useNavigate()
+    const { enqueueSnackbar } = useSnackbar();
+
+    useEffect(() => {
+        if (location.pathname === "/logout") {
+            cookie.remove('token')
+            let variant = 'success'
+            enqueueSnackbar("Logged out successfully", { variant })
+            navigate('/signin')
+        }
+    })
+
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -38,6 +49,7 @@ const Navbar = (props) => {
         setAnchorElUser(event.currentTarget);
     };
 
+    // const 
     const handleCloseNavMenu = () => {
         props.setProgress(50)
         setAnchorElNav(null);
@@ -110,9 +122,17 @@ const Navbar = (props) => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page.key} onClick={handleCloseNavMenu}>
-                                    <NavLink to={'/' + page.key} style={{ textDecoration: "none" }}><Typography textAlign="center" style={{ color: "#000" }}>{page.value}</Typography></NavLink>
+                                    <NavLink key={page.key} to={'/' + page.key} style={{ textDecoration: "none" }}><Typography key={page.key} textAlign="center" style={{ color: "#000" }}>{page.value}</Typography></NavLink>
                                 </MenuItem>
                             ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                {!cookie.get('token') && <NavLink to="/signin" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>}
+                            </MenuItem>
+
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                {!cookie.get('token') && <NavLink to="/signup" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>}
+                            </MenuItem>
+
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -136,16 +156,41 @@ const Navbar = (props) => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <NavLink to={'/' + page.key} style={{ textDecoration: "none" }}>
+                            <NavLink to={'/' + page.key} key={page.key} style={{ textDecoration: "none" }}>
                                 <Button
-                                    key={page.key}
                                     onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{ my: 2, display: 'block' }}
                                 >
                                     <Typography textAlign="center" style={{ color: "#fff" }}>{page.value}</Typography>
                                 </Button>
                             </NavLink>
                         ))}
+                        <Fragment>
+                            {!cookie.get('token') && <>
+
+                                <NavLink to="/signin" style={{ textDecoration: "none" }}>
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        <Typography textAlign="center" style={{ color: "#fff" }}>
+                                            SIGN IN
+                                        </Typography>
+                                    </Button>
+                                </NavLink>
+
+                                <NavLink to="/signup" style={{ textDecoration: "none" }}>
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        <Typography textAlign="center" style={{ color: "#fff" }}>
+                                            SIGN UP
+                                        </Typography>
+                                    </Button>
+                                </NavLink>
+                            </>}
+                        </Fragment>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -175,13 +220,16 @@ const Navbar = (props) => {
                                     <NavLink to={'/' + setting.key} style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>{setting.value}&nbsp;&nbsp;&nbsp;</Typography></NavLink>
                                 </MenuItem>
                             ))}
+                            {cookie.get('token') && <MenuItem onClick={handleCloseUserMenu}>
+                                <NavLink to="/logout" style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>Logout</Typography></NavLink>
+                            </MenuItem>}
                         </Menu>
                     </Box>
                 </Toolbar>
             </Container>
         </AppBar >
-        <LoadingBar color='red' progress={props.progress} onLoaderFinished={() => props.setProgress(0)} />
+        <LoadingBar color='#0000FF' progress={props.progress} onLoaderFinished={() => props.setProgress(0)} />
     </>
     );
 }
-export default Navbar;
+export default memo(Navbar);

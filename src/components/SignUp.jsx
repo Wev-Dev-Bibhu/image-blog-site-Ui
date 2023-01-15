@@ -2,7 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, CircularProgress, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Input, InputAdornment, InputLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { memo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 // import ImageUpload from './ImageUpload'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
@@ -10,11 +10,13 @@ import { BASE_URL, formStyle } from '../Helper/Styles'
 
 
 
-const SignIn = () => {
+const SignUp = () => {
     const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
     const [showCPassword, setShowCPassword] = useState(false);
     const [httpRequest, setHttpRequest] = useState(false);
+    const ariaLabel = { 'min': 10, 'max': 10 };
 
     const [formData, setFormData] = useState({
         username: "",
@@ -62,9 +64,8 @@ const SignIn = () => {
                         // imagepath: ""
                     })
                     enqueueSnackbar(obj.message, { variant })
-                    setTimeout(() => {
-                        setHttpRequest(false)
-                    }, 2000)
+                    setHttpRequest(false)
+                    navigate("/signin")
                 }
             })
             .catch(err => {
@@ -106,7 +107,7 @@ const SignIn = () => {
 
                         <TextField id="username" name="username" fullWidth required color="warning" label="Username" variant="standard" autoComplete='off' value={formData.username} onChange={handleInputChange} />
                         <TextField id="email" name="email" fullWidth margin="dense" required color="warning" label="Email" variant="standard" autoComplete='off' value={formData.email} onChange={handleInputChange} />
-                        <TextField id="phone" name='phone' fullWidth margin="dense" required color="warning" label="Phone" variant="standard" autoComplete='off' value={formData.phone} onChange={handleInputChange} />
+                        <TextField id="phone" name='phone' type="number" fullWidth margin="dense" required color="warning" label="Phone" variant="standard" autoComplete='off' value={formData.phone} onChange={handleInputChange} />
                         <FormControl required variant="standard" margin="dense" fullWidth >
                             <InputLabel htmlFor="standard-adornment-password" color='warning'>Password</InputLabel>
                             <Input
@@ -177,4 +178,4 @@ const SignIn = () => {
     )
 }
 
-export default memo(SignIn)
+export default memo(SignUp)

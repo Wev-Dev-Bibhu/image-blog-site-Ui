@@ -2,14 +2,17 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, CircularProgress, Divider, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { memo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack';
+import Cookies from 'universal-cookie'
 import axios from 'axios'
 import { BASE_URL, formStyle } from '../Helper/Styles'
 // import ImageUpload from './ImageUpload'
 
 
 const SignIn = () => {
+    const navigate = useNavigate()
+    const cookie = new Cookies();
     const { enqueueSnackbar } = useSnackbar();
     const [showPassword, setShowPassword] = useState(false);
     const [httpRequest, setHttpRequest] = useState(false);
@@ -31,14 +34,14 @@ const SignIn = () => {
         const json = JSON.stringify({ email, password });
         await axios.post(`${BASE_URL}/signin`, json, {
             headers: {
-                // 'Authorization': `bearer ${token}`,
+                // 'Authorization': `bearer jwtoken`,
                 'Content-Type': 'application/json'
             }
         })
             .then((res) => {
-                if (res.status === 200) {
-                    console.log(res);
+                if (res.status === 200 || !res) {
                     const obj = res.data
+                    cookie.set('token', res.data.token, { path: '/' });
                     let variant = obj.status
                     setFormData({
                         email: "",
@@ -49,6 +52,7 @@ const SignIn = () => {
                     setTimeout(() => {
                         setHttpRequest(false)
                     }, 2000)
+                    navigate("/")
                 }
             })
             .catch(err => {
@@ -75,7 +79,7 @@ const SignIn = () => {
                 <Box sx={formStyle}>
                     <Typography fontSize={22} sx={{ display: 'grid', placeItems: 'center', color: '#fff', fontWeight: 500, letterSpacing: 2 }}>Sign In</Typography>
                     <Divider color='#fff' sx={{ width: '60%', m: 'auto' }} />
-                    <form encType="multipart/form-data" style={{ marginTop: 30 }}>
+                    <form method="POST" encType="multipart/form-data" style={{ marginTop: 30 }}>
                         {/* <FormControl variant='standard' sx={{ display: 'grid', placeItems: 'center', mt: 2 }} margin="dense">
                             <ImageUpload
                                 inputRef={inputRef}

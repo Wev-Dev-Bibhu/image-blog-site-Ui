@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider,  } from 'notistack';
 import {
   BrowserRouter,
   Routes,
@@ -18,7 +18,6 @@ const App = () => {
   useEffect(() => {
     setProgress(100)
   }, [])
-
 
   // setProgress(() => {
   //   setTimeout(() => {
