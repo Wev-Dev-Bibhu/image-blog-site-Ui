@@ -43,7 +43,7 @@ const About = () => {
     }
     useEffect(() => {
         loadAboutPage()
-    })
+    },[])
 
     const profileStyle = {
         background: '#112132',

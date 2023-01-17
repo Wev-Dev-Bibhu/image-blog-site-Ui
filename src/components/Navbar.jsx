@@ -39,7 +39,7 @@ const Navbar = (props) => {
             enqueueSnackbar("Logged out successfully", { variant })
             navigate('/signin')
         }
-    })
+    }, [cookie])
 
 
     const handleOpenNavMenu = (event) => {
