@@ -6,7 +6,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 // import ImageUpload from './ImageUpload'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
-import { BASE_URL, formStyle } from '../Helper/Styles'
+import { formStyle } from '../Helper/Styles'
 
 
 
@@ -42,7 +42,7 @@ const SignUp = () => {
         console.log(formData);
         const { username, email, password, cpassword, phone, gender, imagepath } = formData
         const json = JSON.stringify({ username, email, password, cpassword, phone, gender, imagepath });
-        await axios.post(`${BASE_URL}/signup`, json, {
+        await axios.post('/signup', json, {
             headers: {
                 // 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json'
