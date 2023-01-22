@@ -10,7 +10,7 @@ import { useState } from 'react'
 import Cookies from 'universal-cookie'
 
 
-const About = () => {
+const About = ({ setProgress }) => {
     const navigate = useNavigate()
     const cookie = new Cookies();
     const { enqueueSnackbar } = useSnackbar();
@@ -23,11 +23,15 @@ const About = () => {
 
     const loadAboutPage = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/about`, {
+            const res = await axios.get(`${BASE_URL}/about?token=${cookie.get('token')}`, {
                 withCredentials: true,
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
+                },
+                onUploadProgress: (progressEvent) => {
+                    const progress = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+                    setProgress(progress)
                 }
             })
             const data = await res.data
@@ -46,6 +50,7 @@ const About = () => {
             enqueueSnackbar("Please login first !! ", { variant })
             navigate("/signin")
         }
+        // eslint-disable-next-line
     }, [])
 
     const profileStyle = {

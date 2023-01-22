@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
-import { SnackbarProvider,  } from 'notistack';
+import { SnackbarProvider } from 'notistack';
 import {
   BrowserRouter,
   Routes,
@@ -31,10 +31,10 @@ const App = () => {
           <Navbar progress={progress} setProgress={setProgress} />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/favourites" element={<LikesPics />} />
+            <Route path="/about" element={<About />} setProgress={setProgress} />
+            <Route path="/signin" element={<SignIn setProgress={setProgress} />} />
+            <Route path="/signup" element={<SignUp setProgress={setProgress} />} />
+            <Route path="/favourites" element={<LikesPics />} setProgress={setProgress} />
           </Routes>
         </SnackbarProvider>
 

@@ -12,7 +12,7 @@ import { BASE_URL } from '../Helper/Common'
 // import ImageUpload from './ImageUpload'
 
 
-const SignIn = () => {
+const SignIn = ({ setProgress }) => {
     const navigate = useNavigate()
     const cookie = new Cookies();
     const { enqueueSnackbar } = useSnackbar();
@@ -27,6 +27,7 @@ const SignIn = () => {
         if (cookie.get('token')) {
             navigate("/")
         }
+        // eslint-disable-next-line
     }, [])
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -42,8 +43,12 @@ const SignIn = () => {
         const json = JSON.stringify({ email, password });
         await axios.post(`${BASE_URL}/signin`, json, {
             headers: {
-                // 'Authorization': `bearer jwtoken`,
                 'Content-Type': 'application/json'
+            },
+            onUploadProgress: (progressEvent) => {
+                const progress = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+                console.log(progress)
+                setProgress(progress)
             }
         })
             .then((res) => {

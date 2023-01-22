@@ -1,19 +1,20 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, CircularProgress, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Input, InputAdornment, InputLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 // import ImageUpload from './ImageUpload'
 import axios from 'axios'
 import { useSnackbar } from 'notistack'
 import { formStyle } from '../Helper/Styles'
 import { BASE_URL } from '../Helper/Common'
+import Cookies from 'universal-cookie'
 
 
-
-const SignUp = () => {
+const SignUp = ({ setProgress }) => {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate()
+    const cookie = new Cookies();
     const [showPassword, setShowPassword] = useState(false);
     const [showCPassword, setShowCPassword] = useState(false);
     const [httpRequest, setHttpRequest] = useState(false);
@@ -28,6 +29,12 @@ const SignUp = () => {
         imagepath: ""
     })
 
+    useEffect(() => {
+        if (cookie.get('token')) {
+            navigate("/")
+        }
+        // eslint-disable-next-line
+    }, [])
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleClickShowCPassword = () => setShowCPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
@@ -45,8 +52,11 @@ const SignUp = () => {
         const json = JSON.stringify({ username, email, password, cpassword, phone, gender, imagepath });
         await axios.post(`${BASE_URL}/signup`, json, {
             headers: {
-                // 'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json'
+            },
+            onUploadProgress: (progressEvent) => {
+                const progress = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+                setProgress(progress)
             }
         })
             .then((res) => {

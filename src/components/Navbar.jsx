@@ -39,6 +39,7 @@ const Navbar = (props) => {
             enqueueSnackbar("Logged out successfully", { variant })
             navigate('/signin')
         }
+        // eslint-disable-next-line
     }, [cookie])
 
 
@@ -120,18 +121,25 @@ const Navbar = (props) => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <NavLink to="/" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>HOME</Typography></NavLink>
+                            </MenuItem>
                             {pages.map((page) => (
                                 <MenuItem key={page.key} onClick={handleCloseNavMenu}>
                                     <NavLink key={page.key} to={'/' + page.key} style={{ textDecoration: "none" }}><Typography key={page.key} textAlign="center" style={{ color: "#000" }}>{page.value}</Typography></NavLink>
                                 </MenuItem>
                             ))}
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                {!cookie.get('token') && <NavLink to="/signin" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>}
-                            </MenuItem>
+                            {!cookie.get('token') &&
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <NavLink to="/signin" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>
+                                </MenuItem>
+                            }
 
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                {!cookie.get('token') && <NavLink to="/signup" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>}
-                            </MenuItem>
+                            {!cookie.get('token') &&
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <NavLink to="/signup" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>
+                                </MenuItem>
+                            }
 
                         </Menu>
                     </Box>
