@@ -1,12 +1,14 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, CircularProgress, Divider, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { memo, useState } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack';
 import Cookies from 'universal-cookie'
 import axios from 'axios'
-import { BASE_URL, formStyle } from '../Helper/Styles'
+import { formStyle } from '../Helper/Styles'
+import { BASE_URL } from '../Helper/Common'
+
 // import ImageUpload from './ImageUpload'
 
 
@@ -20,6 +22,12 @@ const SignIn = () => {
         email: "",
         password: ""
     })
+
+    useEffect(() => {
+        if (cookie.get('token')) {
+            navigate("/")
+        }
+    }, [])
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {

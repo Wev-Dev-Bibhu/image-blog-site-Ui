@@ -5,14 +5,15 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { BASE_URL } from '../Helper/Styles'
+import { BASE_URL } from '../Helper/Common'
 import { useState } from 'react'
+import Cookies from 'universal-cookie'
 
 
 const About = () => {
     const navigate = useNavigate()
+    const cookie = new Cookies();
     const { enqueueSnackbar } = useSnackbar();
-    const [loadPage, setLoadPage] = useState(false)
     const [profileData, setProfileData] = useState({
         username: "",
         email: "",
@@ -29,21 +30,23 @@ const About = () => {
                     "Content-Type": "application/json"
                 }
             })
-            setLoadPage(true)
             const data = await res.data
             setProfileData({ ...profileData, username: data.username, email: data.email, phone: data.phone, gender: data.gender });
 
         } catch (error) {
-            setLoadPage(false)
-            console.log(error);
+            navigate("/signin")
+        }
+    }
+
+    useEffect(() => {
+        if (cookie.get('token')) {
+            loadAboutPage()
+        } else {
             let variant = "error"
             enqueueSnackbar("Please login first !! ", { variant })
             navigate("/signin")
         }
-    }
-    useEffect(() => {
-        loadAboutPage()
-    },[])
+    }, [])
 
     const profileStyle = {
         background: '#112132',
@@ -79,7 +82,7 @@ const About = () => {
 
     return (
         <>
-            {loadPage && <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', mt: 4 }}>
+            <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', mt: 4 }}>
                 <Box sx={profileStyle}>
                     <Box sx={innerBoxStyling}>
                         <img style={{ borderRadius: '50%', height: 300, width: 300 }} src="https://images.unsplash.com/profile-fb-1673026464-24ffd9a383fb.jpg?dpr=1&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff" alt="profile-pic.jpg" />
@@ -106,8 +109,7 @@ const About = () => {
                         </Box>
                     </Box>
                 </Box>
-
-            </Box>}
+            </Box>
         </>
     )
 }
