@@ -11,6 +11,7 @@ import LikesPics from './components/LikesPics';
 import About from './components/About';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import OnBoarding from './components/OnBoarding';
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Navbar progress={progress} setProgress={setProgress} />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/onboarding" element={<OnBoarding />} />
             <Route path="/about" element={<About />} setProgress={setProgress} />
             <Route path="/signin" element={<SignIn setProgress={setProgress} />} />
             <Route path="/signup" element={<SignUp setProgress={setProgress} />} />

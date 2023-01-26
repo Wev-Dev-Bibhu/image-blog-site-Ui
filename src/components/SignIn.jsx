@@ -100,7 +100,7 @@ const SignIn = ({ setProgress }) => {
                             />
                         </FormControl> */}
 
-                        <TextField id="email" name="email" fullWidth margin="dense" required color="warning" label="Email" variant="standard" autoComplete='off' value={formData.email} onChange={handleInputChange} />
+                        <TextField autoFocus id="email" name="email" fullWidth margin="dense" required color="warning" label="Email" variant="standard" autoComplete='off' value={formData.email} onChange={handleInputChange} />
                         <FormControl required variant="standard" margin="dense" fullWidth >
                             <InputLabel htmlFor="standard-adornment-password" color='warning'>Password</InputLabel>
                             <Input

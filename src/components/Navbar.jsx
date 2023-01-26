@@ -24,7 +24,7 @@ const settings = [{
     value: "Dashboard"
 }];
 
-const Navbar = (props) => {
+const Navbar = ({ progress, setProgress }) => {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const cookie = new Cookies();
@@ -52,15 +52,15 @@ const Navbar = (props) => {
 
     // const 
     const handleCloseNavMenu = () => {
-        props.setProgress(50)
+        setProgress(50)
         setAnchorElNav(null);
-        props.setProgress(100)
+        setProgress(100)
     };
 
     const handleCloseUserMenu = () => {
-        props.setProgress(50)
+        setProgress(50)
         setAnchorElUser(null);
-        props.setProgress(100)
+        setProgress(100)
     };
 
     return (<>
@@ -82,13 +82,10 @@ const Navbar = (props) => {
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
-                    // onClick={props.setProgress(100)}
+                    // onClick={setProgress(100)}
                     >
                         <NavLink to='/' onClick={() => {
-                            props.setProgress(60)
-                            setTimeout(() => {
-                                props.setProgress(100)
-                            }, 400);
+                            setProgress(100)
                         }} style={{ color: '#fff', textDecoration: "none" }}>LOGO</NavLink>
                     </Typography>
 
@@ -129,17 +126,6 @@ const Navbar = (props) => {
                                     <NavLink key={page.key} to={'/' + page.key} style={{ textDecoration: "none" }}><Typography key={page.key} textAlign="center" style={{ color: "#000" }}>{page.value}</Typography></NavLink>
                                 </MenuItem>
                             ))}
-                            {!cookie.get('token') &&
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <NavLink to="/signin" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>
-                                </MenuItem>
-                            }
-
-                            {!cookie.get('token') &&
-                                <MenuItem onClick={handleCloseNavMenu}>
-                                    <NavLink to="/signup" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>SIGN IN</Typography></NavLink>
-                                </MenuItem>
-                            }
 
                         </Menu>
                     </Box>
@@ -160,7 +146,9 @@ const Navbar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to='/' style={{ color: '#fff', textDecoration: "none" }}  >LOGO</NavLink>
+                        <NavLink to='/' style={{ color: '#fff', textDecoration: "none" }} onClick={() => {
+                            setProgress(100)
+                        }}  >LOGO</NavLink>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
@@ -173,70 +161,58 @@ const Navbar = (props) => {
                                 </Button>
                             </NavLink>
                         ))}
-                        <Fragment>
-                            {!cookie.get('token') && <>
-
-                                <NavLink to="/signin" style={{ textDecoration: "none" }}>
-                                    <Button
-                                        onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
-                                    >
-                                        <Typography textAlign="center" style={{ color: "#fff" }}>
-                                            SIGN IN
-                                        </Typography>
-                                    </Button>
-                                </NavLink>
-
-                                <NavLink to="/signup" style={{ textDecoration: "none" }}>
-                                    <Button
-                                        onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
-                                    >
-                                        <Typography textAlign="center" style={{ color: "#fff" }}>
-                                            SIGN UP
-                                        </Typography>
-                                    </Button>
-                                </NavLink>
-                            </>}
-                        </Fragment>
                     </Box>
+                    {!cookie.get('token') ? <Button variant='contained' color='warning' sx={{
+                        pt: 1, pb: 1,
+                        // eslint-disable-next-line
+                        ['@media (max-width: 740px)']: {
+                            pt: 0.5,
+                            pb: 0.5
+                        }
+                    }} onClick={() => {
+                        setProgress(100)
+                        navigate("/onboarding")
+                    }} >
+                        Join
+                    </Button> :
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="See Profile">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt="B" src="/static/images/avatar/2.jpg" />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                {settings.map((setting) => (
+                                    <MenuItem key={setting.key} onClick={handleCloseUserMenu}>
+                                        <NavLink to={'/' + setting.key} style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>{setting.value}&nbsp;&nbsp;&nbsp;</Typography></NavLink>
+                                    </MenuItem>
+                                ))}
+                                {cookie.get('token') && <MenuItem onClick={handleCloseUserMenu}>
+                                    <NavLink to="/logout" style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>Logout</Typography></NavLink>
+                                </MenuItem>}
+                            </Menu>
+                        </Box>
+                    }
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="See Profile">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="B" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting.key} onClick={handleCloseUserMenu}>
-                                    <NavLink to={'/' + setting.key} style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>{setting.value}&nbsp;&nbsp;&nbsp;</Typography></NavLink>
-                                </MenuItem>
-                            ))}
-                            {cookie.get('token') && <MenuItem onClick={handleCloseUserMenu}>
-                                <NavLink to="/logout" style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>Logout</Typography></NavLink>
-                            </MenuItem>}
-                        </Menu>
-                    </Box>
                 </Toolbar>
             </Container>
         </AppBar >
-        <LoadingBar color='#0000FF' progress={props.progress} onLoaderFinished={() => props.setProgress(0)} />
+        <LoadingBar color='#0000FF' progress={progress} onLoaderFinished={() => setProgress(0)} />
     </>
     );
 }

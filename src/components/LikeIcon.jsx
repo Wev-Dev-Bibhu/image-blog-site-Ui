@@ -4,14 +4,24 @@ import React from 'react'
 
 const LikeIcon = (props) => {
 
-    // const url = "https://api.unsplash.com/photos/" + props.photoId + "/like/?client_id=jZzyQgWRoFrNGAU0f6rMlcb7MnV5R-3e7sJvl4BVxgU"
+    const { setDisplayLike, heartClass, setHeartClass, value } = props
+
+    // const url = "https://api.unsplash.com/photos/" + photoId + "/like/?client_id=jZzyQgWRoFrNGAU0f6rMlcb7MnV5R-3e7sJvl4BVxgU"
     const handleDislike = () => {
-        props.setDisplayLike(true)
+        setHeartClass("insta-heart-dislike")
+        setTimeout(() => {
+            setHeartClass("")
+        }, 300);
+        setDisplayLike(false)
     }
     const handleLike = async () => {
+        setHeartClass("insta-heart-like")
+        setTimeout(() => {
+            setHeartClass("")
+        }, 1000);
         // const response = await axios.post(url)
         // response.status === 200 ? console.log("Success"+ response) : console.warn("Fail");
-        props.setDisplayLike(false)
+        setDisplayLike(true)
         // console.log(url);
     }
     // const handleUserPhotos = async (userId) => {
@@ -19,9 +29,10 @@ const LikeIcon = (props) => {
     // }
     return (
         <>
-            {props.value ? < Favorite sx={{ color: '#e64e63', cursor: 'pointer', mr: 1, fontSize: "29px" }} onClick={(e) => handleLike()} size="small" />
+            {value ?
+                <Favorite className={heartClass} sx={{ color: '#e64e63', cursor: 'pointer', mr: 1, ml: 1, fontSize: "29px" }} onClick={(e) => handleDislike()} size="small" />
                 :
-                <FavoriteBorder sx={{ color: '#e64e63', cursor: 'pointer', mr: 1, fontSize: "29px" }} onClick={(e) => handleDislike()} size="small" />}
+                <FavoriteBorder className={heartClass} sx={{ color: '#e64e63', cursor: 'pointer', mr: 1, ml: 1, fontSize: "29px" }} onClick={(e) => handleLike()} size="small" />}
         </>
     )
 }

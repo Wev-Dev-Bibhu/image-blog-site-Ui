@@ -115,7 +115,7 @@ const SignUp = ({ setProgress }) => {
                             />
                         </FormControl> */}
 
-                        <TextField id="username" name="username" fullWidth required color="warning" label="Username" variant="standard" autoComplete='off' value={formData.username} onChange={handleInputChange} />
+                        <TextField id="username" autoFocus name="username" fullWidth required color="warning" label="Username" variant="standard" autoComplete='off' value={formData.username} onChange={handleInputChange} />
                         <TextField id="email" name="email" fullWidth margin="dense" required color="warning" label="Email" variant="standard" autoComplete='off' value={formData.email} onChange={handleInputChange} />
                         <TextField id="phone" name='phone' type="number" fullWidth margin="dense" required color="warning" label="Phone" variant="standard" autoComplete='off' value={formData.phone} onChange={handleInputChange} />
                         <FormControl required variant="standard" margin="dense" fullWidth >

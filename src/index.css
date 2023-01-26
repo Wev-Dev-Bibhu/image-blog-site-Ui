@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #F8F0E3;
 }
 
 code {
@@ -68,4 +69,80 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.instagram {
+  border-radius: 20%;
+  color: #fff;
+  background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf)
+}
+
+.social-icons {
+  font-size: 33px !important;
+}
+
+.share {
+  -webkit-justify-content: none !important;
+  justify-content: flex-start !important;
+  padding-left: 15px !important;
+}
+
+.insta-heart-like {
+  animation-duration: 1000ms;
+  animation-name: like-heart-animation;
+  animation-timing-function: ease-in-out;
+}
+
+.insta-heart-dislike {
+  animation-duration: 300ms;
+  animation-name: dislike-heart-animation;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes dislike-heart-animation {
+  0% {
+    opacity: 0;
+    transform: translateX(0%);
+  }
+
+  25% {
+    opacity: .9;
+    transform: translateX(20%);
+  }
+
+  50% {
+    opacity: .9;
+    transform: translateX(0%);
+  }
+
+  75% {
+    transform: translateX(-20%);
+  }
+
+  100% {
+    opacity: .9;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes like-heart-animation {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  15% {
+    opacity: .9;
+    transform: scale(1.2);
+  }
+
+  30% {
+    transform: scale(.95);
+  }
+
+  45%,
+  80% {
+    opacity: .9;
+    transform: scale(1);
+  }
 }

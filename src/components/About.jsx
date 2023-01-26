@@ -14,6 +14,7 @@ const About = ({ setProgress }) => {
     const navigate = useNavigate()
     const cookie = new Cookies();
     const { enqueueSnackbar } = useSnackbar();
+    const [loadPage, setLoadPage] = useState(false)
     const [profileData, setProfileData] = useState({
         username: "",
         email: "",
@@ -36,6 +37,7 @@ const About = ({ setProgress }) => {
             })
             const data = await res.data
             setProfileData({ ...profileData, username: data.username, email: data.email, phone: data.phone, gender: data.gender });
+            setLoadPage(true)
 
         } catch (error) {
             navigate("/signin")
@@ -87,7 +89,7 @@ const About = ({ setProgress }) => {
 
     return (
         <>
-            <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', mt: 4 }}>
+            {loadPage && <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', mt: 4 }}>
                 <Box sx={profileStyle}>
                     <Box sx={innerBoxStyling}>
                         <img style={{ borderRadius: '50%', height: 300, width: 300 }} src="https://images.unsplash.com/profile-fb-1673026464-24ffd9a383fb.jpg?dpr=1&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff" alt="profile-pic.jpg" />
@@ -114,7 +116,7 @@ const About = ({ setProgress }) => {
                         </Box>
                     </Box>
                 </Box>
-            </Box>
+            </Box>}
         </>
     )
 }
