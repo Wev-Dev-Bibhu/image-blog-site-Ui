@@ -12,6 +12,7 @@ import About from './components/About';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import OnBoarding from './components/OnBoarding';
+import Explore from './components/Explore';
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<OnBoarding />} />
+            <Route path="/explore/:username/:total" element={<Explore />} />
             <Route path="/about" element={<About />} setProgress={setProgress} />
             <Route path="/signin" element={<SignIn setProgress={setProgress} />} />
             <Route path="/signup" element={<SignUp setProgress={setProgress} />} />

@@ -1,6 +1,8 @@
 import { CopyAll, Facebook, Instagram, Mail, Share, Twitter, WhatsApp } from '@mui/icons-material'
 import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Slide, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { handleDescription } from '../Helper/Common';
 import LikeIcon from './LikeIcon'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -12,25 +14,21 @@ const ImageBlog = (props) => {
   const [displayLike, setDisplayLike] = useState(false)
   const [openShareModal, setShareModal] = useState(false)
   const [heartClass, setHeartClass] = useState("")
+  const navigate = useNavigate()
 
-  const handleDescription = (description) => {
-    if (description) {
-      if (description.length > 42) {
-        return description.charAt(0).toUpperCase() + description.slice(1).substring(0, 41).concat("...")
-      } else {
-        return description.charAt(0).toUpperCase() + description.slice(1).substring(0, 41)
-      }
-    } else {
-      return "No Description"
-    }
-  }
   return (
     <Box sx={{ m: 2 }} key={data.id}>
       <Card sx={{ width: 345 }}>
         <CardMedia
           sx={{ height: 240 }}
           image={data.urls.regular}
-          onDoubleClick={() => setDisplayLike(true)}
+          onDoubleClick={() => {
+            setHeartClass("insta-heart-like")
+            setTimeout(() => {
+              setHeartClass("")
+            }, 1000);
+            setDisplayLike(true)
+          }}
         />
         <CardContent sx={{ height: 35, background: '#f1f1f1' }}>
           <Typography variant="body2" color="text.secondary" sx={{ width: 310, pb: 0.5 }}>
@@ -45,8 +43,8 @@ const ImageBlog = (props) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ p: 1, pt: 2, background: '#f1f1f1' }} >
-          <LikeIcon value={displayLike} setDisplayLike={setDisplayLike} heartClass={heartClass} setHeartClass={setHeartClass} photoId={data.id} />
-          <Button size="small" variant="text" color='warning'  >Explore</Button>
+          <LikeIcon value={displayLike} setDisplayLike={setDisplayLike} heartClass={heartClass} setHeartClass={setHeartClass} photoId={data.id} color='#e64e63' />
+          <Button size="small" variant="text" color='warning' onClick={() => navigate(`/explore/${data.user.username}/${data.user.total_photos}`)}  >Explore</Button>
           <Typography variant='body2' color="text.secondary" textAlign="right" width={160}>{displayLike ? data.likes + 1 : data.likes} Likes</Typography>
           <IconButton aria-label="share" onClick={() => setShareModal(true)} sx={{ float: 'right' }} >
             <Share sx={{ color: '#50A1E6' }} />
@@ -63,7 +61,7 @@ const ImageBlog = (props) => {
         <DialogTitle>Share</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <Typography>Tap an icon below to share your content directly</Typography>
+            <Typography component="span">Tap an icon below to share your content directly</Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions className='share'>
@@ -82,7 +80,7 @@ const ImageBlog = (props) => {
           <IconButton aria-label='twitter' color='info'>
             <Twitter className='social-icons' />
           </IconButton>
-          <IconButton  aria-label='copy'>
+          <IconButton aria-label='copy'>
             <CopyAll className='social-icons' />
           </IconButton>
         </DialogActions>

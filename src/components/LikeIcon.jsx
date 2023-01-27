@@ -4,7 +4,7 @@ import React from 'react'
 
 const LikeIcon = (props) => {
 
-    const { setDisplayLike, heartClass, setHeartClass, value } = props
+    const { setDisplayLike, heartClass, setHeartClass, value, color } = props
 
     // const url = "https://api.unsplash.com/photos/" + photoId + "/like/?client_id=jZzyQgWRoFrNGAU0f6rMlcb7MnV5R-3e7sJvl4BVxgU"
     const handleDislike = () => {
@@ -30,9 +30,9 @@ const LikeIcon = (props) => {
     return (
         <>
             {value ?
-                <Favorite className={heartClass} sx={{ color: '#e64e63', cursor: 'pointer', mr: 1, ml: 1, fontSize: "29px" }} onClick={(e) => handleDislike()} size="small" />
+                <Favorite className={heartClass} sx={{ color: color, cursor: 'pointer', mr: 1, ml: 1, fontSize: "29px" }} onClick={(e) => handleDislike()} size="small" />
                 :
-                <FavoriteBorder className={heartClass} sx={{ color: '#e64e63', cursor: 'pointer', mr: 1, ml: 1, fontSize: "29px" }} onClick={(e) => handleLike()} size="small" />}
+                <FavoriteBorder className={heartClass} sx={{ color: color, cursor: 'pointer', mr: 1, ml: 1, fontSize: "29px" }} onClick={(e) => handleLike()} size="small" />}
         </>
     )
 }
