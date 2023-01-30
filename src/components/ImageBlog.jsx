@@ -43,7 +43,7 @@ const ImageBlog = (props) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ p: 1, pt: 2, background: '#f1f1f1' }} >
-          <LikeIcon value={displayLike} setDisplayLike={setDisplayLike} heartClass={heartClass} setHeartClass={setHeartClass} photoId={data.id} color='#e64e63' />
+          <LikeIcon value={displayLike} setDisplayLike={setDisplayLike} heartClass={heartClass} setHeartClass={setHeartClass} photoData={data} color='#e64e63' />
           <Button size="small" variant="text" color='warning' onClick={() => navigate(`/explore/${data.user.username}/${data.user.total_photos}`)}  >Explore</Button>
           <Typography variant='body2' color="text.secondary" textAlign="right" width={160}>{displayLike ? data.likes + 1 : data.likes} Likes</Typography>
           <IconButton aria-label="share" onClick={() => setShareModal(true)} sx={{ float: 'right' }} >

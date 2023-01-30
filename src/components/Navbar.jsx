@@ -1,11 +1,11 @@
-import React, { useState, useEffect, memo, Fragment } from 'react';
-import { Avatar, Button, Tooltip, MenuItem, Container, Toolbar, Menu, Typography, IconButton, Box, AppBar } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import AdbIcon from '@mui/icons-material/Adb';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import LoadingBar from 'react-top-loading-bar';
-import Cookies from 'universal-cookie';
-import { useSnackbar } from 'notistack';
+import React, { useState, useEffect, memo } from 'react'
+import { Avatar, Button, Tooltip, MenuItem, Container, Toolbar, Menu, Typography, IconButton, Box, AppBar } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import AdbIcon from '@mui/icons-material/Adb'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import LoadingBar from 'react-top-loading-bar'
+import Cookies from 'universal-cookie'
+import { useSnackbar } from 'notistack'
 
 const pages = [{
     key: "about",
@@ -13,7 +13,7 @@ const pages = [{
 }, {
     key: "contact",
     value: "CONTACT US"
-}];
+}]
 
 
 const settings = [{
@@ -22,19 +22,23 @@ const settings = [{
 }, {
     key: "dashboard",
     value: "Dashboard"
-}];
+}]
 
 const Navbar = ({ progress, setProgress }) => {
-    const [anchorElNav, setAnchorElNav] = useState(null);
-    const [anchorElUser, setAnchorElUser] = useState(null);
-    const cookie = new Cookies();
+    const [anchorElNav, setAnchorElNav] = useState(null)
+    const [anchorElUser, setAnchorElUser] = useState(null)
+    const cookie = new Cookies()
     const location = useLocation()
     const navigate = useNavigate()
-    const { enqueueSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar()
+    const userID = cookie.get('userID')
+    let imgUrl = cookie.get('imgUrl')
 
     useEffect(() => {
+        imgUrl = cookie.get('imgUrl')
         if (location.pathname === "/logout") {
             cookie.remove('token')
+            cookie.remove('userID')
             let variant = 'success'
             enqueueSnackbar("Logged out successfully", { variant })
             navigate('/signin')
@@ -44,24 +48,23 @@ const Navbar = ({ progress, setProgress }) => {
 
 
     const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
+        setAnchorElNav(event.currentTarget)
+    }
     const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
+        setAnchorElUser(event.currentTarget)
+    }
 
     // const 
     const handleCloseNavMenu = () => {
         setProgress(50)
-        setAnchorElNav(null);
+        setAnchorElNav(null)
         setProgress(100)
-    };
-
+    }
     const handleCloseUserMenu = () => {
         setProgress(50)
-        setAnchorElUser(null);
+        setAnchorElUser(null)
         setProgress(100)
-    };
+    }
 
     return (<>
         <AppBar position="sticky">
@@ -84,7 +87,7 @@ const Navbar = ({ progress, setProgress }) => {
                         }}
                     // onClick={setProgress(100)}
                     >
-                        <NavLink to='/' onClick={() => {
+                        <NavLink to={userID ? `/${userID}/` : "/"} onClick={() => {
                             setProgress(100)
                         }} style={{ color: '#fff', textDecoration: "none" }}>LOGO</NavLink>
                     </Typography>
@@ -119,11 +122,11 @@ const Navbar = ({ progress, setProgress }) => {
                             }}
                         >
                             <MenuItem onClick={handleCloseNavMenu}>
-                                <NavLink to="/" style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>HOME</Typography></NavLink>
+                                <NavLink to={userID ? `/${userID}/` : "/"} style={{ textDecoration: "none", display: 'block' }}><Typography textAlign="center" style={{ color: "#000" }}>HOME</Typography></NavLink>
                             </MenuItem>
                             {pages.map((page) => (
                                 <MenuItem key={page.key} onClick={handleCloseNavMenu}>
-                                    <NavLink key={page.key} to={'/' + page.key} style={{ textDecoration: "none" }}><Typography key={page.key} textAlign="center" style={{ color: "#000" }}>{page.value}</Typography></NavLink>
+                                    <NavLink key={page.key} to={userID ? `/${userID}/` + page.key : "/" + page.key} style={{ textDecoration: "none" }}><Typography key={page.key} textAlign="center" style={{ color: "#000" }}>{page.value}</Typography></NavLink>
                                 </MenuItem>
                             ))}
 
@@ -146,13 +149,13 @@ const Navbar = ({ progress, setProgress }) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to='/' style={{ color: '#fff', textDecoration: "none" }} onClick={() => {
+                        <NavLink to={userID ? `/${userID}/` : "/"} style={{ color: '#fff', textDecoration: "none" }} onClick={() => {
                             setProgress(100)
                         }}  >LOGO</NavLink>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <NavLink to={'/' + page.key} key={page.key} style={{ textDecoration: "none" }}>
+                            <NavLink to={userID ? `/${userID}/` + page.key : "/" + page.key} key={page.key} style={{ textDecoration: "none" }}>
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{ my: 2, display: 'block' }}
@@ -178,7 +181,7 @@ const Navbar = ({ progress, setProgress }) => {
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="See Profile">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="B" src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt={userID.toUpperCase()} src={imgUrl} />
                                 </IconButton>
                             </Tooltip>
                             <Menu
@@ -197,11 +200,12 @@ const Navbar = ({ progress, setProgress }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting.key} onClick={handleCloseUserMenu}>
-                                        <NavLink to={'/' + setting.key} style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>{setting.value}&nbsp;&nbsp;&nbsp;</Typography></NavLink>
-                                    </MenuItem>
-                                ))}
+                                {
+                                    settings.map((setting) => (
+                                        <MenuItem key={setting.key} onClick={handleCloseUserMenu}>
+                                            <NavLink to={`/${userID}/` + setting.key} style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>{setting.value}&nbsp;&nbsp;&nbsp;</Typography></NavLink>
+                                        </MenuItem>
+                                    ))}
                                 {cookie.get('token') && <MenuItem onClick={handleCloseUserMenu}>
                                     <NavLink to="/logout" style={{ textDecoration: "none", color: '#000' }}> <Typography textAlign="center" noWrap>Logout</Typography></NavLink>
                                 </MenuItem>}
@@ -214,6 +218,6 @@ const Navbar = ({ progress, setProgress }) => {
         </AppBar >
         <LoadingBar color='#0000FF' progress={progress} onLoaderFinished={() => setProgress(0)} />
     </>
-    );
+    )
 }
-export default memo(Navbar);
+export default memo(Navbar)

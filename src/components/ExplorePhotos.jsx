@@ -24,7 +24,7 @@ const ExplorePhotos = (props) => {
                 }}
                 position='top'
                 actionIcon={
-                    <LikeIcon value={displayLike} setDisplayLike={setDisplayLike} heartClass={heartClass} setHeartClass={setHeartClass} photoId={item.id} color="#fff" />
+                    <LikeIcon value={displayLike} setDisplayLike={setDisplayLike} heartClass={heartClass} setHeartClass={setHeartClass} photoData={item} color="#fff" />
                 }
             />
             <ImageListItemBar

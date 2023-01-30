@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react'
 import ImageList from '@mui/material/ImageList'
-import ImageListItem from '@mui/material/ImageListItem'
-import ImageListItemBar from '@mui/material/ImageListItemBar'
-import IconButton from '@mui/material/IconButton'
 import { memo } from 'react'
-import { Download, Info } from '@mui/icons-material'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
@@ -54,7 +50,7 @@ const Explore = () => {
                     pr: matchDownMd ? 1.5 : 7
                 }}>
                     {apiData.map((item) => (
-                        <ExplorePhotos item={item} />
+                        <ExplorePhotos item={item} key={item.id} />
                     ))}
                 </ImageList>
             </Box>

@@ -1,12 +1,51 @@
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
-// import axios from 'axios'
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
+import Cookies from 'universal-cookie'
+import { BASE_URL } from '../Helper/Common'
 
 const LikeIcon = (props) => {
 
-    const { setDisplayLike, heartClass, setHeartClass, value, color } = props
+    const { setDisplayLike, heartClass, setHeartClass, value, color, photoData } = props
+    const cookie = new Cookies()
+    // eslint-disable-next-line
+    const [likedPhotos, setLikedPhotos] = useState({
+        id: photoData.id,
+        updatedAt: photoData.updated_at,
+        description: photoData.description,
+        altDescription: photoData.alt_description,
+        userName: photoData.user.name,
+        firstName: photoData.user.first_name,
+        userProfileImg: photoData.user.profile_image.medium,
+        image: photoData.urls.regular,
+        username: cookie.get('userID')
+    })
 
-    // const url = "https://api.unsplash.com/photos/" + photoId + "/like/?client_id=jZzyQgWRoFrNGAU0f6rMlcb7MnV5R-3e7sJvl4BVxgU"
+    const likePhotosAxiosCall = async () => {
+        const json = JSON.stringify(likedPhotos)
+        const response = await axios.post(`${BASE_URL}/like`, json, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        response.status === 200 ? console.log("Success" + response.data) : console.warn("Fail");
+    }
+    const disLikePhotosAxiosCall = async () => {
+        // const json = JSON.stringify(likedPhotos)
+        // console.log(json);
+        // const response = await axios.post(`${BASE_URL}/like`, json, {
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // })
+        // response.status === 200 ? console.log("Success" + response.data) : console.warn("Fail");
+    }
+
+    useEffect(() => {
+        value ? likePhotosAxiosCall() : disLikePhotosAxiosCall()
+        // eslint-disable-next-line
+    }, [value])
     const handleDislike = () => {
         setHeartClass("insta-heart-dislike")
         setTimeout(() => {
@@ -19,14 +58,9 @@ const LikeIcon = (props) => {
         setTimeout(() => {
             setHeartClass("")
         }, 1000);
-        // const response = await axios.post(url)
-        // response.status === 200 ? console.log("Success"+ response) : console.warn("Fail");
         setDisplayLike(true)
         // console.log(url);
     }
-    // const handleUserPhotos = async (userId) => {
-    //     console.log(url);
-    // }
     return (
         <>
             {value ?

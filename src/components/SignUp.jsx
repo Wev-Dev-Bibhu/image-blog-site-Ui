@@ -26,7 +26,8 @@ const SignUp = ({ setProgress }) => {
         cpassword: "",
         phone: "",
         gender: "",
-        imagepath: ""
+        fullname: "",
+        // imagepath: ""
     })
 
     useEffect(() => {
@@ -48,8 +49,8 @@ const SignUp = ({ setProgress }) => {
         e.preventDefault()
         setHttpRequest(true)
         console.log(formData);
-        const { username, email, password, cpassword, phone, gender, imagepath } = formData
-        const json = JSON.stringify({ username, email, password, cpassword, phone, gender, imagepath });
+        const { username, email, password, cpassword, phone, gender, imagepath, fullname } = formData
+        const json = JSON.stringify({ username, email, password, cpassword, phone, gender, imagepath, fullname });
         await axios.post(`${BASE_URL}/signup`, json, {
             headers: {
                 'Content-Type': 'application/json'
@@ -70,6 +71,7 @@ const SignUp = ({ setProgress }) => {
                         password: "",
                         cpassword: "",
                         phone: "",
+                        fullname: "",
                         gender: "",
                         // imagepath: ""
                     })
@@ -115,8 +117,9 @@ const SignUp = ({ setProgress }) => {
                             />
                         </FormControl> */}
 
-                        <TextField id="username" autoFocus name="username" fullWidth required color="warning" label="Username" variant="standard" autoComplete='off' value={formData.username} onChange={handleInputChange} />
-                        <TextField id="email" name="email" fullWidth margin="dense" required color="warning" label="Email" variant="standard" autoComplete='off' value={formData.email} onChange={handleInputChange} />
+                        <TextField id="username" autoFocus name="username" type="text" fullWidth required color="warning" label="Username" variant="standard" autoComplete='off' value={formData.username} onChange={handleInputChange} />
+                        <TextField id="fullname" name="fullname" fullWidth required color="warning" label="Name" variant="standard" autoComplete='off' value={formData.fullname} onChange={handleInputChange} />
+                        <TextField id="email" type="email" name="email" fullWidth margin="dense" required color="warning" label="Email" variant="standard" autoComplete='off' value={formData.email} onChange={handleInputChange} />
                         <TextField id="phone" name='phone' type="number" fullWidth margin="dense" required color="warning" label="Phone" variant="standard" autoComplete='off' value={formData.phone} onChange={handleInputChange} />
                         <FormControl required variant="standard" margin="dense" fullWidth >
                             <InputLabel htmlFor="standard-adornment-password" color='warning'>Password</InputLabel>

@@ -1,10 +1,18 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 
 const OnBoarding = () => {
     const navigate = useNavigate()
+    const cookie = new Cookies()
+    useEffect(() => {
+        if (cookie.get('userID') && cookie.get('token')) {
+            navigate(`/${cookie.get('userID')}`)
+        }
+        // eslint-disable-next-line
+    }, [])
     return (
         <>
             <Box sx={{

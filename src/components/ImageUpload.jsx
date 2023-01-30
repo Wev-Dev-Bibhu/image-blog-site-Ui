@@ -11,7 +11,8 @@ const ImageUpload = (props) => {
         acceptedFiles.map((file) => {
             if (file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png') {
                 setImg(URL.createObjectURL(file))
-                props.handleImageUpload(URL.createObjectURL(file))
+                console.log(file)
+                props.handleImagetoBeUploaded(file)
             } else {
                 alert("File format no supported")
             }
@@ -27,18 +28,17 @@ const ImageUpload = (props) => {
     return (
         <>
             <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                {!img ? <Box sx={{ height: 100, width: 200, border: '1px dashed #fff', borderRadius: 1, display: 'flex', alignItems: 'center', cursor: 'pointer', background: isDragActive ? "#e8e9e9" : "none" }}>
+                <input  {...getInputProps()} />
+                {!img ? <Box sx={{ height: 100, width: 200, border: '1px dashed #000', borderRadius: 1, display: 'flex', alignItems: 'center', cursor: 'pointer', background: isDragActive ? "#e8e9e9" : "none" }}>
                     <CloudUpload sx={{ fontSize: 60, pl: 2, pr: 1 }} />
                     <Typography fontSize={13} >Drop Image Here</Typography>
                 </Box> : ""}
             </div >
             {img ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-                    <img src={img} height={100} width={100} alt="thumbnail" style={{ borderRadius: 3 }} /><CancelRounded sx={{ position: 'absolute', right: -10, top: -10, cursor: 'pointer', bgcolor: '#000', borderRadius: '50%' }} onClick={() => setImg(null)} />
+                    <img src={img} height={180} width={180} alt="thumbnail" style={{ borderRadius: 3 }} /><CancelRounded sx={{ position: 'absolute', right: -10, top: -10, cursor: 'pointer', bgcolor: '#000', borderRadius: '50%', color: '#fff' }} onClick={() => setImg(null)} />
                 </Box>
             ) : ""}
-            {console.log("render")}
         </>
     )
 }

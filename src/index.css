@@ -44,6 +44,17 @@ span svg:nth-child(1),
   color: #e7e7e7 !important;
 }
 
+.dashboard label,
+.dashboard input {
+  color: #112132 !important;
+}
+
+.dashboard label {
+  font-weight: 500;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  margin-top: 2px ;
+}
+
 .lkjDVC {
   border: dashed 2px #ed6c02 !important;
 }

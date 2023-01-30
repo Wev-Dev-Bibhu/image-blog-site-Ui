@@ -38,7 +38,6 @@ const SignIn = ({ setProgress }) => {
     const handleSubmitForm = async (e) => {
         e.preventDefault()
         setHttpRequest(true)
-        console.log(formData);
         const { email, password } = formData
         const json = JSON.stringify({ email, password });
         await axios.post(`${BASE_URL}/signin`, json, {
@@ -54,7 +53,9 @@ const SignIn = ({ setProgress }) => {
             .then((res) => {
                 if (res.status === 200 || !res) {
                     const obj = res.data
-                    cookie.set('token', res.data.token, { path: '/' });
+                    cookie.set('token', res.data.token, { path: '/' })
+                    cookie.set('userID', res.data.userID, { path: '/' })
+                    cookie.set('imgUrl', res.data.imgUrl, { path: '/' })
                     let variant = obj.status
                     setFormData({
                         email: "",
@@ -65,7 +66,7 @@ const SignIn = ({ setProgress }) => {
                     setTimeout(() => {
                         setHttpRequest(false)
                     }, 2000)
-                    navigate("/")
+                    navigate(`/${res.data.userID}`)
                 }
             })
             .catch(err => {

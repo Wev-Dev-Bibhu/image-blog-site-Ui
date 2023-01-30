@@ -3,9 +3,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import ImageBlog from './ImageBlog'
 import jsonData from '../Json/JsonData.json'
-import { Pagination } from '@mui/material';
+import { Pagination } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 
 const Home = () => {
+    const cookie = new Cookies()
+    const navigate = useNavigate()
     const [apiData, setApiData] = useState(jsonData)
     const [page, setPage] = useState(1)
     const apiUrl = `https://api.unsplash.com/photos/?client_id=jZzyQgWRoFrNGAU0f6rMlcb7MnV5R-3e7sJvl4BVxgU&page=${page}&per_page=12`
@@ -16,14 +20,23 @@ const Home = () => {
     }
 
     useEffect(() => {
+        if (cookie.get('userID') && cookie.get('token')) {
+            navigate(`/${cookie.get('userID')}`)
+        } else {
+            navigate("/")
+        }
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
         setTimeout(() => {
             getApiCall()
-        }, 500);
+        }, 500)
         window.scrollTo({
             top: 0,
             left: 0,
             behavior: "smooth"
-        });
+        })
         // eslint-disable-next-line
     }, [page])
 
