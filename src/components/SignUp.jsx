@@ -27,7 +27,6 @@ const SignUp = ({ setProgress }) => {
         phone: "",
         gender: "",
         fullname: "",
-        // imagepath: ""
     })
 
     useEffect(() => {
@@ -48,23 +47,18 @@ const SignUp = ({ setProgress }) => {
     const handleSubmitForm = async (e) => {
         e.preventDefault()
         setHttpRequest(true)
-        console.log(formData);
-        const { username, email, password, cpassword, phone, gender, imagepath, fullname } = formData
-        const json = JSON.stringify({ username, email, password, cpassword, phone, gender, imagepath, fullname });
+        setProgress(70)
+        const { username, email, password, cpassword, phone, gender, fullname } = formData
+        const json = JSON.stringify({ username, email, password, cpassword, phone, gender, fullname });
         await axios.post(`${BASE_URL}/signup`, json, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            onUploadProgress: (progressEvent) => {
-                const progress = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
-                setProgress(progress)
             }
         })
             .then((res) => {
+                setProgress(85)
                 if (res.status === 201) {
-                    console.log(res);
-                    const obj = res.data
-                    let variant = obj.status
+                    let variant = res.data.status
                     setFormData({
                         username: "",
                         email: "",
@@ -73,10 +67,10 @@ const SignUp = ({ setProgress }) => {
                         phone: "",
                         fullname: "",
                         gender: "",
-                        // imagepath: ""
                     })
-                    enqueueSnackbar(obj.message, { variant })
+                    setProgress(100)
                     setHttpRequest(false)
+                    enqueueSnackbar(res.data.message, { variant })
                     navigate("/signin")
                 }
             })

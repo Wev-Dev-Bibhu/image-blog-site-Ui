@@ -41,7 +41,7 @@ const App = () => {
             <Route path="/explore/:username/:total" element={<Explore />} />
             <Route path="/about" element={<About />} setProgress={setProgress} />
             <Route path="/:userID/favourites" exact element={<LikesPics />} setProgress={setProgress} />
-            <Route path="/:userID/dashboard" element={<Dashboard />} setProgress={setProgress} />
+            <Route path="/:userID/dashboard" element={<Dashboard setProgress={setProgress} />} />
           </Routes>
         </SnackbarProvider>
 

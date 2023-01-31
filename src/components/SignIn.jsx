@@ -38,20 +38,17 @@ const SignIn = ({ setProgress }) => {
     const handleSubmitForm = async (e) => {
         e.preventDefault()
         setHttpRequest(true)
+        setProgress(75)
         const { email, password } = formData
         const json = JSON.stringify({ email, password });
         await axios.post(`${BASE_URL}/signin`, json, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            onUploadProgress: (progressEvent) => {
-                const progress = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total));
-                console.log(progress)
-                setProgress(progress)
             }
         })
             .then((res) => {
                 if (res.status === 200 || !res) {
+                    setProgress(85)
                     const obj = res.data
                     cookie.set('token', res.data.token, { path: '/' })
                     cookie.set('userID', res.data.userID, { path: '/' })
@@ -60,12 +57,11 @@ const SignIn = ({ setProgress }) => {
                     setFormData({
                         email: "",
                         password: ""
-                        // imagepath: ""
                     })
+                    setProgress(90)
+                    setHttpRequest(false)
+                    setProgress(100)
                     enqueueSnackbar(obj.message, { variant })
-                    setTimeout(() => {
-                        setHttpRequest(false)
-                    }, 2000)
                     navigate(`/${res.data.userID}`)
                 }
             })

@@ -6,6 +6,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
 import Cookies from 'universal-cookie'
 import { useSnackbar } from 'notistack'
+import { useRef } from 'react'
 
 const pages = [{
     key: "about",
@@ -35,16 +36,20 @@ const Navbar = ({ progress, setProgress }) => {
     let imgUrl = cookie.get('imgUrl')
 
     useEffect(() => {
-        imgUrl = cookie.get('imgUrl')
         if (location.pathname === "/logout") {
             cookie.remove('token')
             cookie.remove('userID')
+            cookie.remove('imgUrl')
             let variant = 'success'
             enqueueSnackbar("Logged out successfully", { variant })
             navigate('/signin')
         }
         // eslint-disable-next-line
     }, [cookie])
+
+    useEffect(() => {
+        imgUrl = cookie.get('imgUrl')
+    }, [setProgress])
 
 
     const handleOpenNavMenu = (event) => {
@@ -181,7 +186,7 @@ const Navbar = ({ progress, setProgress }) => {
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="See Profile">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt={userID.toUpperCase()} src={imgUrl} />
+                                    <Avatar alt={userID.toUpperCase()} src={imgUrl !== undefined ? imgUrl : "null"} />
                                 </IconButton>
                             </Tooltip>
                             <Menu
