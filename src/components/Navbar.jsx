@@ -6,7 +6,6 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import LoadingBar from 'react-top-loading-bar'
 import Cookies from 'universal-cookie'
 import { useSnackbar } from 'notistack'
-import { useRef } from 'react'
 
 const pages = [{
     key: "about",
@@ -48,6 +47,7 @@ const Navbar = ({ progress, setProgress }) => {
     }, [cookie])
 
     useEffect(() => {
+        // eslint-disable-next-line
         imgUrl = cookie.get('imgUrl')
     }, [setProgress])
 

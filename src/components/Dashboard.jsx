@@ -1,7 +1,7 @@
 import { ArrowBack, Delete, Edit, Upload } from '@mui/icons-material'
 import { Button, CircularProgress, Dialog, FormControl, IconButton, Slide, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import axios from 'axios'
 import selfieImg from '../Images/selfie.svg'
 import demoProfile from '../Images/demo-profile.png'
