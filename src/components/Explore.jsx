@@ -8,7 +8,7 @@ import { FormControl, MenuItem, Select, useMediaQuery, useTheme } from '@mui/mat
 import { Box } from '@mui/system'
 import ExplorePhotos from './ExplorePhotos'
 
-const Explore = () => {
+const Explore = ({ setProgress }) => {
     const { username, total } = useParams()
     const [orderBy, setOrderBy] = useState('latest')
     const [apiData, setApiData] = useState([])
@@ -21,7 +21,9 @@ const Explore = () => {
         if (response.status === 200) setApiData(response.data)
     }
     useEffect(() => {
+        setProgress(100)
         makeUserProfilePhotosAxiosCall()
+        // eslint-disable-next-line
     }, [orderBy])
     const handleChange = (event) => {
         setOrderBy(event.target.value)

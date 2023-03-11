@@ -7,7 +7,7 @@ import { Pagination } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
-const Home = () => {
+const Home = ({ setProgress }) => {
     const cookie = new Cookies()
     const navigate = useNavigate()
     const [apiData, setApiData] = useState(jsonData)
@@ -29,14 +29,18 @@ const Home = () => {
     }, [])
 
     useEffect(() => {
+        setProgress(70)
         setTimeout(() => {
             getApiCall()
         }, 500)
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "smooth"
-        })
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "smooth"
+            })
+            setProgress(100)
+        }, 600)
         // eslint-disable-next-line
     }, [page])
 

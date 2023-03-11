@@ -1,5 +1,6 @@
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import axios from 'axios'
+import { useSnackbar } from 'notistack'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import Cookies from 'universal-cookie'
@@ -8,6 +9,7 @@ import { BASE_URL } from '../Helper/Common'
 const LikeIcon = (props) => {
 
     const { setDisplayLike, heartClass, setHeartClass, value, color, photoData } = props
+    const { enqueueSnackbar } = useSnackbar();
     const cookie = new Cookies()
     // eslint-disable-next-line
     const [likedPhotos, setLikedPhotos] = useState({
@@ -47,6 +49,11 @@ const LikeIcon = (props) => {
         // eslint-disable-next-line
     }, [value])
     const handleDislike = () => {
+        if (!cookie.get('userID')) {
+            const variant = 'info'
+            enqueueSnackbar("You need to login before !!", { variant })
+            return
+        }
         setHeartClass("insta-heart-dislike")
         setTimeout(() => {
             setHeartClass("")
@@ -54,6 +61,11 @@ const LikeIcon = (props) => {
         setDisplayLike(false)
     }
     const handleLike = async () => {
+        if (!cookie.get('userID')) {
+            const variant = 'info'
+            enqueueSnackbar("You need to login before !!", { variant })
+            return
+        }
         setHeartClass("insta-heart-like")
         setTimeout(() => {
             setHeartClass("")

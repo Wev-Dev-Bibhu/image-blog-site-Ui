@@ -33,12 +33,12 @@ const App = () => {
         <SnackbarProvider maxSnack={1} autoHideDuration={2000}>
           <Navbar progress={progress} setProgress={setProgress} />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/onboarding" element={<OnBoarding />} />
+            <Route path="/" element={<Home setProgress={setProgress} />} />
+            <Route path="/onboarding" element={<OnBoarding setProgress={setProgress} />} />
             <Route path="/signin" element={<SignIn setProgress={setProgress} />} />
             <Route path="/signup" element={<SignUp setProgress={setProgress} />} />
-            <Route path="/:userID" element={<Home />} />
-            <Route path="/explore/:username/:total" element={<Explore />} />
+            <Route path="/:userID" element={<Home setProgress={setProgress} />} />
+            <Route path="/explore/:username/:total" element={<Explore setProgress={setProgress} />} />
             <Route path="/about" element={<About />} setProgress={setProgress} />
             <Route path="/:userID/favourites" exact element={<LikesPics />} setProgress={setProgress} />
             <Route path="/:userID/dashboard" element={<Dashboard setProgress={setProgress} />} />

@@ -73,7 +73,7 @@ const Navbar = ({ progress, setProgress }) => {
 
     return (<>
         <AppBar position="sticky">
-            <Container maxWidth="xl" sx={{ background: '#0f0f0fd1' }}>
+            <Container maxWidth="2xl" sx={{ background: '#0f0f0fd1' }}>
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography

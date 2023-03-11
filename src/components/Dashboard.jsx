@@ -1,9 +1,9 @@
 import { ArrowBack, Delete, Edit, Upload } from '@mui/icons-material'
-import { Button, CircularProgress, Dialog, FormControl, IconButton, Slide, TextField, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Button, CircularProgress, Dialog, FormControl, IconButton, Slide, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { forwardRef, useEffect, useState } from 'react'
 import axios from 'axios'
-import selfieImg from '../Images/selfie.svg'
+import selfieImg from '../Images/selfie.webp'
 import demoProfile from '../Images/demo-profile.png'
 import ImageUpload from './ImageUpload'
 import { BASE_URL } from '../Helper/Common'
@@ -112,22 +112,27 @@ const Dashboard = (props) => {
         <>
             {loadPage && <Box sx={{ paddingX: matchDownSM ? 2 : 28, pt: 7 }}>
                 <Box>
-                    <Typography variant={matchDownSM ? "h6" : "h4"}> WelCome Back <b> {profileData.fullname.split(" ")[0]} </b></Typography>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant={matchDownSM ? "h6" : "h4"}> WelCome Back <b> {profileData.fullname.split(" ")[0]} </b></Typography>
+                        <Button sx={{ textTransform: 'capitalize', ml: 3, px: 1, height: 28 }} size='small' variant="outlined" color="warning"> <Edit sx={{ fontSize: 15, mr: 0.5 }} /> Edit Profile</Button>
+                    </div>
                     <Typography variant='body2' sx={{ color: '#788192' }}> Full Stack Developer</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexDirection: matchDownSM && "column" }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mt: 3, flexDirection: matchDownSM ? "column" : "row" }}>
                         <div style={{ position: 'relative' }}>
-                            <img height={200} width={200} style={{ borderRadius: '50%' }} src={profileData.profileurl !== "NULL" ? profileData.profileurl : demoProfile} alt="" />
-                            <IconButton
-                                onClick={() => setProfileModal(true)}
-                                sx={{
-                                    position: 'absolute', right: 25, background: '#000', color: '#fff', "&:hover": {
-                                        backgroundColor: "#282828"
-                                    }
-                                }}>
-                                <Edit sx={{ fontSize: 13 }} />
-                            </IconButton>
+                            <img draggable={false} height={200} width={200} style={{ borderRadius: '50%' }} src={profileData.profileurl !== "NULL" ? profileData.profileurl : demoProfile} alt="" />
+                            <Tooltip title="Edit Icon" placement="right-start">
+                                <IconButton
+                                    onClick={() => setProfileModal(true)}
+                                    sx={{
+                                        position: 'absolute', right: 25, background: '#000', color: '#fff', "&:hover": {
+                                            backgroundColor: "#282828"
+                                        }
+                                    }}>
+                                    <Edit sx={{ fontSize: 13 }} />
+                                </IconButton>
+                            </Tooltip>
                             <Dialog
                                 open={openProfileModal}
                                 onClose={() => setProfileModal(false)}
@@ -159,12 +164,20 @@ const Dashboard = (props) => {
                             </Dialog>
                         </div>
                     </Box>
-                    <Box sx={{ height: matchDownSM ? 150 : 200, width: matchDownSM ? "100%" : 500, bgcolor: '#d4d6de', borderRadius: 0.8, display: 'flex', mt: matchDownSM && 5 }}>
-                        <Typography sx={{ p: 1.5, width: matchDownSM ? "100%" : "50%" }}>
-                            Write something about you
-                        </Typography>
+                    <Box sx={{ px: 2, pb: 3, pt: 2, height: matchDownSM ? 150 : 200, width: matchDownSM ? "100%" : 500, bgcolor: '#d4d6de', borderRadius: 0.8, display: 'flex', mt: matchDownSM && 5 }}>
+                        <textarea
+                            style={{ width: matchDownSM ? "100%" : '50%' }}
+                            placeholder="Write something about you"
+                            className='dashboard-textarea'
+
+                        // onClick={() => { alert('g') }}
+
+                        >
+
+                        </textarea>
+
                         {!matchDownSM && <div style={{ position: 'relative', width: "50%" }}>
-                            <img style={{ position: 'absolute', right: matchDownSM ? -10 : - 90, top: -50 }} height={matchDownSM ? 200 : 300} src={selfieImg} alt="selfie-img" />
+                            <img style={{ position: 'absolute', right: 0, top: -50, zIndex: 0 }} draggable={false} height={matchDownSM ? 200 : 300} src={selfieImg} alt="selfie-img" />
                         </div>}
                     </Box>
                 </Box>

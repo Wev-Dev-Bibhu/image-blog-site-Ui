@@ -2,7 +2,7 @@ import { Avatar, Box, Card, CardContent, CardMedia, Typography } from '@mui/mate
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { BASE_URL } from '../Helper/Common'
+import { BASE_URL, handleDescription } from '../Helper/Common'
 
 const LikesPics = () => {
     const { userID } = useParams()
@@ -34,9 +34,9 @@ const LikesPics = () => {
                             sx={{ height: 240 }}
                             image={data.image}
                         />
-                        <CardContent sx={{ height: 35 }}>
+                        <CardContent sx={{ height: 45 }}>
                             <Typography variant="body2" color="text.secondary" sx={{ width: 310 }}>
-                                {data.description}
+                                {data.description ? handleDescription(data.description) : handleDescription(data.alt_description)}
                             </Typography>
                             <Typography component="div" variant="body2" fontSize={14} sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Avatar alt={data.userName} src={data.userProfileImg} sx={{ mr: 1 }} />

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
-const OnBoarding = () => {
+const OnBoarding = ({ setProgress }) => {
     const navigate = useNavigate()
     const cookie = new Cookies()
     useEffect(() => {
@@ -42,7 +42,10 @@ const OnBoarding = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button variant='contained' color='warning' onClick={() => navigate("/signin")} fullWidth>Sign In</Button>
+                        <Button variant='contained' color='warning' onClick={() => {
+                            setProgress(100)
+                            navigate("/signin")
+                        }} fullWidth>Sign In</Button>
                     </CardActions>
                 </Card>
                 <Card sx={{ height: 300, width: 345, borderRadius: 4, p: 2, border: '1px dashed #d5d5d5' }}>
@@ -59,7 +62,10 @@ const OnBoarding = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button variant='contained' color='warning' onClick={() => navigate("/signup")} fullWidth>Sign Up</Button>
+                        <Button variant='contained' color='warning' onClick={() => {
+                            setProgress(100)
+                            navigate("/signup")
+                        }} fullWidth>Sign Up</Button>
                     </CardActions>
                 </Card>
             </Box>

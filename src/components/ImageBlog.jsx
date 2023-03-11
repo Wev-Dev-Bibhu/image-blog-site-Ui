@@ -1,5 +1,5 @@
 import { CopyAll, Facebook, Instagram, Mail, Share, Twitter, WhatsApp } from '@mui/icons-material'
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Slide, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Slide, Tooltip, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { handleDescription } from '../Helper/Common';
@@ -15,6 +15,23 @@ const ImageBlog = (props) => {
   const [openShareModal, setShareModal] = useState(false)
   const [heartClass, setHeartClass] = useState("")
   const navigate = useNavigate()
+  const [shareToolTipTitle, setShareToolTipTitle] = useState({
+    facebook: "Share via Facebook",
+    whatsapp: "Share via WhatsApp",
+    twitter: "Share via Twitter",
+    instagram: "Share via Instagram",
+    clipboard: "Copy to Clipboard",
+    mail: "Share via Mail"
+  })
+
+  const handleCopy = (copyLink) => {
+    navigator.clipboard.writeText(copyLink)
+    setShareToolTipTitle({ ...shareToolTipTitle, clipboard: 'Copied' })
+    setTimeout(() => {
+      setShareToolTipTitle({ ...shareToolTipTitle, clipboard: "Copy to Clipboard" })
+    }, 1000);
+  }
+
 
   return (
     <Box sx={{ m: 2 }} key={data.id}>
@@ -65,24 +82,36 @@ const ImageBlog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions className='share'>
-          <IconButton aria-label='facebook' color='primary'>
-            <Facebook className='social-icons' />
-          </IconButton>
-          <IconButton aria-label='whatsapp' color='success'>
-            <WhatsApp className='social-icons' />
-          </IconButton>
-          <IconButton aria-label='instagram'>
-            <Instagram className='social-icons instagram' />
-          </IconButton>
-          <IconButton aria-label='mail' color='warning'>
-            <Mail className='social-icons' />
-          </IconButton>
-          <IconButton aria-label='twitter' color='info'>
-            <Twitter className='social-icons' />
-          </IconButton>
-          <IconButton aria-label='copy'>
-            <CopyAll className='social-icons' />
-          </IconButton>
+          <Tooltip title={shareToolTipTitle.facebook} placement="top">
+            <IconButton aria-label='facebook' color='primary'>
+              <Facebook className='social-icons' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shareToolTipTitle.whatsapp} placement="top">
+            <IconButton aria-label='whatsapp' color='success'>
+              <WhatsApp className='social-icons' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shareToolTipTitle.instagram} placement="top">
+            <IconButton aria-label='instagram'>
+              <Instagram className='social-icons instagram' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shareToolTipTitle.mail} placement="top">
+            <IconButton aria-label='mail' color='warning'>
+              <Mail className='social-icons' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shareToolTipTitle.twitter} placement="top">
+            <IconButton aria-label='twitter' color='info'>
+              <Twitter className='social-icons' />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={shareToolTipTitle.clipboard} placement="top">
+            <IconButton aria-label='copy'>
+              <CopyAll className='social-icons' onClick={() => handleCopy(data.links.html)} />
+            </IconButton>
+          </Tooltip>
         </DialogActions>
       </Dialog>
     </Box >

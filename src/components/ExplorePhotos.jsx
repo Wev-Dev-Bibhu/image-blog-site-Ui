@@ -1,6 +1,6 @@
 import { Download } from '@mui/icons-material'
 import { IconButton, ImageListItem, ImageListItemBar } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LikeIcon from './LikeIcon'
 import { saveAs } from 'file-saver'
 import { handleDescription } from '../Helper/Common'
@@ -9,12 +9,28 @@ const ExplorePhotos = (props) => {
     const { item } = props
     const [displayLike, setDisplayLike] = useState(false)
     const [heartClass, setHeartClass] = useState("")
+    const imgRef = useRef(null)
+
+    const handleLoadImages = () => {
+        if (imgRef && imgRef.current.complete) {
+            if (imgRef.current.naturalWidth === 0) {
+                alert('Success')
+            } else {
+                alert('Err')
+            }
+        }
+    }
+    useEffect(() => {
+
+    }, [])
     return (
         <ImageListItem key={item.urls.regular}>
             <img
                 src={item.urls.regular}
                 alt={item.alt_description}
                 loading="lazy"
+                ref={imgRef.current}
+                onLoad={handleLoadImages}
             />
             <ImageListItemBar
                 sx={{
